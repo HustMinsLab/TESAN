@@ -185,7 +185,10 @@ class TESAN(nn.Module):
 
     def forward(self, input, word_vecs, mask, compute_loss=False, avg_loss=True):
         # NTM
-        recon, ntm_loss, dt_vec = self.ntm(input, compute_loss, avg_loss)
+        if compute_loss:
+            recon, ntm_loss, dt_vec = self.ntm(input, compute_loss, avg_loss)
+        else:
+            recon, dt_vec = self.ntm(input, compute_loss, avg_loss)
 
         # topic-enhanced self-attention
         doc_vec = self.tesa(word_vecs, dt_vec, mask)
